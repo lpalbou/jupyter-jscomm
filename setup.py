@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="jupyter-jscomm",
-    version="0.1.2",
+    version="0.1.3",
     author="Laurent-Philippe Albou",
     author_email="lpalbou@gmail.com",
     description="A package for JavaScript-Python communication in Jupyter notebooks",

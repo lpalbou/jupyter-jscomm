@@ -60,6 +60,30 @@ class JSComm:
         }}
         """
         self._execute_js(js_code)
+
+    def has(self, key : str):
+        """Check if a key already exists
+        
+        Args:
+            key (str): Key to add
+                    
+        Returns:
+            Boolean: True if key already exists, False otherwise
+        """        
+        return key in self._get_current_data()
+
+    def set(self, key: str, value: Any) -> None:
+        """Add a new key-value pair to the stored data. If the key exists, will update it
+        
+        Args:
+            key (str): Key to add
+            value (Any): Value to associate with the key            
+        """
+        data = self._get_current_data()
+        if key in data :
+            self.update(key, value)
+        else:
+            self.add(key, value)
     
     def add(self, key: str, value: Any) -> None:
         """Add a new key-value pair to the stored data.
