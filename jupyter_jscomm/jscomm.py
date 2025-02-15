@@ -1,5 +1,5 @@
 import ipywidgets as widgets
-from IPython.display import Javascript
+from IPython.display import Javascript, display
 import json
 from typing import Any, Optional, Dict
 
@@ -16,8 +16,9 @@ class JSComm:
         """
         self.class_name = class_name
         self.widget = widgets.Text(value="{}")
-        self.widget.layout.visibility = "hidden"
+        self.widget.layout.display = "none"
         self.widget.add_class(self.class_name)
+        display(self.widget)
     
     def _execute_js(self, script: str) -> None:
         """Execute JavaScript code in the notebook.
@@ -46,9 +47,17 @@ class JSComm:
         """
         js_code = f"""
         var parent = document.getElementsByClassName("{self.class_name}")[0];
-        var input = parent.querySelector(".widget-input");
-        input.value = '{json.dumps(data)}';
-        input.dispatchEvent(new Event('input', {{ bubbles: true }}));
+        if (parent) {{
+            var input = parent.querySelector(".widget-input");
+            if (input) {{
+                input.value = '{json.dumps(data)}';
+                input.dispatchEvent(new Event('input', {{ bubbles: true }}));
+            }} else {{
+                console.error("Input element not found");
+            }}
+        }} else {{
+            console.error("Parent element not found");
+        }}
         """
         self._execute_js(js_code)
     
